@@ -1,6 +1,7 @@
 import { useThemeColors } from "@/hooks/useThemeColors";
+import { Link } from "expo-router";
 import React from "react";
-import { Image, StyleSheet, View, ViewStyle } from "react-native";
+import { Image, Pressable, StyleSheet, View, ViewStyle } from "react-native";
 import Card from "../card";
 import ThemeText from "../themeText";
 
@@ -14,29 +15,36 @@ export default function PokemonCard({ style, id, name }: Props) {
   const colors = useThemeColors();
 
   return (
-    <Card style={[style, styles.card]}>
-      {/* Shadow background */}
-      <View
-        style={[styles.shadow, { backgroundColor: colors.grayBackground }]}
-      />
+    <Link href={{ pathname: "/pokemon/[id]", params: { id: id } }} asChild>
+      <Pressable
+        android_ripple={{ color: colors.grayWhite, foreground: true }}
+        style={style}
+      >
+        <Card style={[styles.card]}>
+          {/* Shadow background */}
+          <View
+            style={[styles.shadow, { backgroundColor: colors.grayBackground }]}
+          />
 
-      {/* ID in top-right */}
-      <View style={styles.idContainer}>
-        <ThemeText variant="caption" color="grayMedium">
-          #{id.toString().padStart(3, "0")}
-        </ThemeText>
-      </View>
+          {/* ID in top-right */}
+          <View style={styles.idContainer}>
+            <ThemeText variant="caption" color="grayMedium">
+              #{id.toString().padStart(3, "0")}
+            </ThemeText>
+          </View>
 
-      {/* Pokémon image */}
-      <Image
-        source={{
-          uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
-        }}
-        style={styles.image}
-        resizeMode="contain"
-      />
-      <ThemeText>{name}</ThemeText>
-    </Card>
+          {/* Pokémon image */}
+          <Image
+            source={{
+              uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+            }}
+            style={styles.image}
+            resizeMode="contain"
+          />
+          <ThemeText>{name}</ThemeText>
+        </Card>
+      </Pressable>
+    </Link>
   );
 }
 
