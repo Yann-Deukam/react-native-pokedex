@@ -9,7 +9,7 @@ export default function RootView({ style, ...rest }: props) {
   const colors = useThemeColors();
   return (
     <SafeAreaView
-      style={[RootStyle, { backgroundColor: colors.tint }]}
+      style={[RootStyle, { backgroundColor: colors.tint }, style]}
       {...rest}
     />
   );

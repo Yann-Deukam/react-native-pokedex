@@ -14,7 +14,7 @@ import { ActivityIndicator, FlatList, Image, StyleSheet } from "react-native";
 export default function Index() {
   const colors = useThemeColors();
   const { data, isFetching, fetchNextPage } =
-    useInfiniteFetchQuery("pokemon?limit=21");
+    useInfiniteFetchQuery<"/pokemon?limit=21">("pokemon?limit=21");
   const pokemons =
     data?.pages.flatMap((page) =>
       page.results.map((r) => ({ name: r.name, id: getPokemonId(r.url) }))

@@ -1,3 +1,4 @@
+import { getPokemonArtworkUrl } from "@/functions/pokemon";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { Link } from "expo-router";
 import React from "react";
@@ -36,7 +37,7 @@ export default function PokemonCard({ style, id, name }: Props) {
           {/* Pokémon image */}
           <Image
             source={{
-              uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+              uri: getPokemonArtworkUrl(id),
             }}
             style={styles.image}
             resizeMode="contain"

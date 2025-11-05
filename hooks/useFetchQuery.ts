@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
 const endpoint = "https://pokeapi.co/api/v2/";
@@ -15,21 +16,33 @@ type API = {
     weight: number;
     height: number;
     moves: { move: { name: string; url: string } }[];
-    types: { type: { name: string; url: string } }[];
-    cries: { cry: { url: string } }[];
+    types: {
+      type: {
+        name: keyof (typeof Colors)["type"];
+      };
+    }[];
+    cries: { latest: string };
     abilities: { ability: { name: string; url: string } }[];
     forms: { form: { name: string; url: string } }[];
   };
 };
 
-export function useFetchQuery<T extends keyof API>(path: string) {
+export function useFetchQuery<T extends keyof API>(
+  path: string,
+  params?: Record<string, string | number>
+) {
+  const localUrl =
+    endpoint +
+    Object.entries(params ?? {}).reduce(
+      (acc, [key, value]) => acc.replaceAll(`[${key}]`, String(value)),
+      path
+    );
+
   return useQuery({
-    queryKey: [path],
+    queryKey: [localUrl],
     queryFn: async () => {
       await wait(1); // Simulate network delay
-      return fetch(endpoint + path).then(
-        (res) => res.json() as Promise<API[T]>
-      );
+      return fetch(localUrl).then((res) => res.json() as Promise<API[T]>);
     },
   });
 }
